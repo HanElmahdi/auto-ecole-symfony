@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    {% if app.request.hasPreviousSession %}
+		{% for label, messages in app.flashes %}
+			{% for message in messages %}
+				<div class="alert alert-{{ label }}">
+					{% if label == 'success' %}
+						<i class="fas fa-check"></i> {{ message|raw }}
+					{% elseif label == 'danger' %}
+						<i class="fal fa-window-close"></i> {{ message|raw }}
+					{% endif %}
+				</div>
+			{% endfor %}
+		{% endfor %}
+	{% endif %}
+
+    {% for flash_error in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+    {% set errors = false %}
+	
+	{% for child in registrationForm.children %}
+			{% if child.vars.errors is defined and child.vars.errors|length %}
+					{% set errors = true %}
+			{% endif %}
+	{% endfor %}
+    {% if errors %}
+		{% if not registrationForm.vars.valid %}
+			<div class="alert alert-warning">
+				<div class="d-b m-b-10"><i class="fal fa-times-circle align-middle"></i> Veuillez corriger les erreures suivantes: </div>
+				<ul class="p-l-15">
+					{# Loop through every form item #}
+					{% for child in registrationForm.children %}
+						{# {{dump(child.vars)}} #}
+						{# Display the errors of the form item #}
+						{%for error in child.vars.errors%}
+							<li class="m-b-5">{{error.message|raw}}</li>
+						{%endfor%}
+					{%endfor%}
+				</ul>
+			</div>
+		{%endif%}
+	{% endif %}
+
+    <h1 class="mb-3">Inscription étudiant</h1>
+
+    {{ form_errors(registrationForm) }}
+
+    {{ form_start(registrationForm, {'attr': {'action': '/register'}}) }}
+    
+        <div class="mb-3">
+            <div class="row">
+                <div class="col-2">
+                    <label for="name" class="form-label">{{ form_label(registrationForm.email) }}</label>
+                </div>
+                <div class="col-3">
+                    {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="row">
+                <div class="col-2">
+                    <label for="name" class="form-label">{{ form_label(registrationForm.prenom) }}</label>
+                </div>
+                <div class="col-3">
+                    {{ form_widget(registrationForm.prenom, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="row">
+                <div class="col-2">
+                    <label for="name" class="form-label">{{ form_label(registrationForm.nom) }}</label>
+                </div>
+                <div class="col-3">
+                    {{ form_widget(registrationForm.nom, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="row">
+                <div class="col-2">
+                    <label for="name" class="form-label">{{ form_label(registrationForm.phone) }}</label>
+                </div>
+                <div class="col-3">
+                    {{ form_widget(registrationForm.phone, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="row">
+                <div class="col-2">
+                    <label for="name" class="form-label">{{ form_label(registrationForm.plainPassword) }}</label>
+                </div>
+                <div class="col-3">
+                    {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="row">
+                <div class="col-3">
+                    {{ form_widget(registrationForm.agreeTerms,{'attr': {'class': 'form-check-input'}}) }}
+                    <label for="name" class="form-label">{{ form_label(registrationForm.agreeTerms) }}</label>
+                </div>
+            </div>
+        </div>
+        
+
+        <button type="submit" class="btn btn-success">Register</button>
+        <br>
+        <br><a href="{{ path('app_login')}}">Login</a>
+    {{ form_end(registrationForm) }}
+{% endblock %}

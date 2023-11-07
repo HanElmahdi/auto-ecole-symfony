@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Historique des réservations
+{% endblock %}
+
+{% block body %}
+
+	<h1 class="mb-3">Historique des réservations</h1>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Etudiant</th>
+				<th>Heure</th>
+				<th>Date d'examen</th>
+				<th>Montant</th>
+				<th>Status de paiement</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for reservation in reservations %}
+				<tr>
+					<td>{{ reservation.id }}</td>
+					<td>
+						{% if reservation.etudiant  %}
+							{{ reservation.etudiant.nom }}
+							{{ reservation.etudiant.prenom }}
+						{% else %}
+							-
+						{% endif %}
+					</td>
+					<td>{{ reservation.hours }}</td>
+					<td>{{ reservation.dateExam ? reservation.dateExam|date('Y-m-d') : '' }}</td>
+					<td>{{ reservation.amount | default('-') }}</td>
+					<td>
+						{% if reservation.transactionState ==  "SUCCESS" %}
+							<span class="badge bg-success">
+								{{ reservation.transactionState | default('-') }}
+							</span>
+						{% endif %}
+					</td>
+					<td>
+						<a href="{{ path('app_reservation_show', {'id': reservation.id}) }}" class="btn btn-info">Afficher</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="7">Aucune réservation trouvée</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+{% endblock %}

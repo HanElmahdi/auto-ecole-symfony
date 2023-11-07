@@ -1,0 +1,5 @@
+App\Entity\User:
+  user_user:
+    email: "mahdi.webdesigner@gmail.com"
+    roles: "[]"
+    password: "$2y$10$G1kf0.OWAghMSrvW5j5Kq.M7BxJN7fyTj8zPVUtQAolO0IciA/jg."

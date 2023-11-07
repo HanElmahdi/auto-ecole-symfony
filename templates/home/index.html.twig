@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 900px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1 class="mb-4 home">Réservez Vos Cours de Conduite en Ligne! ✅</h1>
+
+    <p class="mb-4 test">Explorez une nouvelle façon de planifier votre avenir sur la route. Notre système de réservation en ligne vous offre une liberté totale pour choisir le moment qui vous convient le mieux. Avec des instructeurs dévoués et une technologie de pointe, vous serez entre de bonnes mains tout au long de votre parcours. Suivez vos progrès, gérez vos leçons et effectuez des paiements sécurisés en toute simplicité. La route vers la réussite commence ici, réservez votre première leçon dès maintenant et faites un pas de plus vers votre indépendance au volant !</p>
+    <a class="btn btn-danger btn-lg" href="{{path('app_reservation_new')}}">Réserver Maintenant!</a>
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Etudiant{% endblock %}
+
+{% block body %}
+    <h1>Créer un Etudiant</h1>
+    {% if app.request.hasPreviousSession %}
+		{% for label, messages in app.flashes %}
+			{% for message in messages %}
+				<div class="alert alert-{{ label }}">
+					{% if label == 'success' %}
+						<i class="fas fa-check"></i> {{ message|raw }}
+					{% elseif label == 'danger' %}
+						<i class="fal fa-window-close"></i> {{ message|raw }}
+					{% endif %}
+				</div>
+			{% endfor %}
+		{% endfor %}
+	{% endif %}
+
+    {{ include('etudiant/_form.html.twig') }}
+{% endblock %}
+
+
+{% block javascripts %}
+
+	{{ parent() }}
+
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (() => {
+            'use strict';
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll('.needs-validation');
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms).forEach((form) => {
+                form.addEventListener('submit', (event) => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+
+{% endblock %}

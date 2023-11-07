@@ -1,0 +1,125 @@
+{{ form_start(form, {'attr':{'id':'checkout-form'}}) }}
+
+	{% if app.request.hasPreviousSession %}
+		{% for label, messages in app.flashes %}
+			{% for message in messages %}
+				<div class="alert alert-{{ label }}">
+					{% if label == 'success' %}
+						<i class="fas fa-check"></i> {{ message|raw }}
+					{% elseif label == 'danger' %}
+						<i class="fal fa-window-close"></i> {{ message|raw }}
+					{% endif %}
+				</div>
+			{% endfor %}
+		{% endfor %}
+	{% endif %}
+
+	<div class="alert alert-danger d-none" id="errors-message"></div>
+
+	{% set errors = false %}
+	
+	{% for child in form.children %}
+			{% if child.vars.errors is defined and child.vars.errors|length %}
+					{% set errors = true %}
+			{% endif %}
+	{% endfor %}
+
+	{% if errors %}
+		{% if not form.vars.valid %}
+			<div class="alert alert-warning">
+				<div class="d-b m-b-10"><i class="fal fa-times-circle align-middle"></i> Veuillez corriger les erreures suivantes: </div>
+				<ul class="p-l-15">
+					{# Loop through every form item #}
+					{% for child in form.children %}
+						{# {{dump(child.vars)}} #}
+						{# Display the errors of the form item #}
+						{%for error in child.vars.errors%}
+							<li class="m-b-5">{{error.message|raw}}</li>
+						{%endfor%}
+					{%endfor%}
+				</ul>
+			</div>
+		{%endif%}
+	{% endif %}
+
+
+<div class="mb-3">
+	<div class="row">
+		<div class="col-2">
+			<label for="name" class="form-label">{{ form_label(form.hours) }}</label>
+		</div>
+		<div class="col-3">
+			{{ form_widget(form.hours, {'type': 'number','attr': {'class': 'form-control'}}) }}
+		</div>
+	</div>
+</div>
+<div class="mb-3">
+	<div class="row">
+		<div class="col-2">
+			<label for="name" class="form-label">{{ form_label(form.date_exam) }}</label>
+		</div>
+		<div class="col-3">
+			{{ form_widget(form.date_exam, {'attr': {'class': 'form-control js-datepicker'}}) }}
+		</div>
+	</div>
+</div>
+
+<div class="mb-3">
+	<div class="row">
+		<div class="col-2">
+			<label for="name" class="form-label">{{ form_label(form.type_permis) }}</label>
+		</div>
+		<div class="col-3">
+			{% for choice in form.type_permis %}
+				<div class="form-check">
+					{{ form_widget(choice, {'attr': {'class': 'form-check-input'}}) }}
+					<label for="name" class="form-label">{{ form_label(choice) }}</label>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+
+{% if is_granted('ROLE_ADMIN') %}
+
+<div class="mb-3">
+	<div class="row">
+		<div class="col-2">
+			<label for="name" class="form-label">{{ form_label(form.etudiant) }}</label>
+		</div>
+		<div class="col-3">
+			{{ form_widget(form.etudiant, {'attr': {'class': 'form-control'}}) }}
+		</div>
+	</div>
+</div>
+{% endif %}
+
+<div class="mb-3">
+	<div class="row">
+		<div class="col-2">
+			<label for="name" class="form-label">{{ form_label(form.instructeurs) }}</label>
+		</div>
+		<div class="col-3">
+			{{ form_widget(form.instructeurs, {'attr': {'class': 'form-control'}}) }}
+		</div>
+	</div>
+</div>
+
+<div class="mb-3">
+	<div class="row">
+		<div class="col-2">
+			<label for="name" class="form-label">Paiement</label>
+		</div>
+		<div class="col-3">
+			<div id="card-element" class="form-control" ></div>
+			<input type='hidden' name='stripeToken' id='stripe-token-id'>
+		</div>
+	</div>
+</div>
+
+<button id='pay-btn' class="btn btn-success" name="ajouter" type="submit" onclick="createToken()">{{ button_label|default('Ajouter') }}</button>
+
+<br>
+<br>
+
+{{ form_end(form) }}

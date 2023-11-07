@@ -1,0 +1,107 @@
+{{ form_start(form, {'attr':{'id':'add-etudiant', 'class':'needs-validation', 'novalidate':''}}) }}
+{% if app.request.hasPreviousSession %}
+	{% for label, messages in app.flashes %}
+		{% for message in messages %}
+			<div class="alert alert-{{ label }}">
+				{% if label == 'success' %}
+					<i class="fas fa-check"></i>
+					{{ message|raw }}
+				{% elseif label == 'danger' %}
+					<i class="fal fa-window-close"></i>
+					{{ message|raw }}
+				{% endif %}
+			</div>
+		{% endfor %}
+	{% endfor %}
+{% endif %}
+
+<div class="alert alert-danger d-none" id="errors-message"></div>
+
+{% set errors = false %}
+
+{% for child in form.children %}
+	{% if child.vars.errors is defined and child.vars.errors|length %}
+		{% set errors = true %}
+	{% endif %}
+{% endfor %}
+
+{% if errors %}
+	{% if not form.vars.valid %}
+		<div class="alert alert-warning">
+			<div class="d-b m-b-10">
+				<i class="fal fa-times-circle align-middle"></i>
+				Veuillez corriger les erreures suivantes:
+			</div>
+			<ul
+				class="p-l-15">
+				{# Loop through every form item #}
+				{% for child in form.children %}
+					{# {{dump(child.vars)}} #}
+					{# Display the errors of the form item #}
+						{%for error in child.vars.errors%}
+							<li class="m-b-5"> {{error.message|raw}}</li>
+						{%endfor%}
+						{%endfor%}
+					</ul>
+				</div>
+				{%endif%}
+			{% endif %}
+
+			<div class="mb-3">
+				<div class="row">
+					<div class="col-2">
+						<label for="name" class="form-label">{{ form_label(form.email) }}</label>
+					</div>
+					<div class="col-3">
+						{{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+						<div class="valid-feedback">
+							Looks good!
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="mb-3">
+				<div class="row">
+					<div class="col-2">
+						<label for="name" class="form-label">{{ form_label(form.prenom) }}</label>
+					</div>
+					<div class="col-3">
+						{{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+					</div>
+					<div class="valid-feedback">
+					Looks good!
+					</div>
+				</div>
+			</div>
+			<div class="mb-3">
+				<div class="row">
+					<div class="col-2">
+						<label for="name" class="form-label">{{ form_label(form.nom) }}</label>
+					</div>
+					<div class="col-3">
+						{{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+						<div class="invalid-feedback">
+							Please choose a nom.
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="mb-3">
+				<div class="row">
+					<div class="col-2">
+						<label for="name" class="form-label">{{ form_label(form.phone) }}</label>
+					</div>
+					<div class="col-3">
+						{{ form_widget(form.phone, {'attr': {'class': 'form-control'}}) }}
+						<div class="invalid-feedback">
+							Please choose a phone.
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<button class="btn btn-success" type="submit">{{ button_label|default('Modifier') }}</button>
+			<br>
+			<br>
+			{{ form_end(form) }}

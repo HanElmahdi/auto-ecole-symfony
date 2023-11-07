@@ -1,0 +1,57 @@
+<?php
+
+namespace App\Entity;
+
+use App\Repository\UserRepository;
+use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\User as BaseUser;
+
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+class User extends BaseUser
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[ORM\Column(type: "integer", nullable: false, unique: true)]
+    protected $id = null;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Etudiant $etudiant = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Instructeur $instructeur = null;
+
+    public function __construct()
+    {
+        parent::__construct();
+        // Your own constructor logic here
+    }
+
+    public function getEtudiant(): ?Etudiant
+    {
+        return $this->etudiant;
+    }
+
+    public function setEtudiant(?Etudiant $etudiant): static
+    {
+        $this->etudiant = $etudiant;
+
+        return $this;
+    }
+
+    public function getInstructeur(): ?Instructeur
+    {
+        return $this->instructeur;
+    }
+
+    public function setInstructeur(?Instructeur $instructeur): static
+    {
+        $this->instructeur = $instructeur;
+
+        return $this;
+    }
+}

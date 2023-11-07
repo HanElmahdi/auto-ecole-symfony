@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Welcome!
+			{% endblock %}
+		</title>
+		<link
+		rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+		{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+		{% block stylesheets %}
+			{{ encore_entry_link_tags('app') }}
+		{% endblock %}
+
+		{# templates/base.html.twig or specific templates #}
+	</head>
+	<body>
+        <!-- Top Navigation Bar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<a href="{{ path('app_home') }}">
+				<img src="{{ asset('images/logo.png') }}" alt="Your Logo" class="img-thumbnail max-width-100">
+			</a>
+            <!-- Left Elements -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_home') }}">Home</a>
+                </li>
+                {% if is_granted('ROLE_ADMIN') %}
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('app_reservation_index') }}">Réservations</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('app_etudiant_index') }}">Etudiants</a>
+					</li>
+                {% elseif is_granted('ROLE_ETUDIANT') %}
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('app_reservation_new') }}">Faire une Réservation</a>
+					</li>
+				{% endif %}
+            </ul>
+
+            <!-- Right Elements -->
+            <ul class="navbar-nav ms-auto">
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+					<li class="nav-item">
+						{% if is_granted('ROLE_ADMIN') %}
+							<b class="nav-link"><strong>Admin: {{ app.user.email }}</strong></b>
+						{% elseif is_granted('ROLE_ETUDIANT') %}
+							<b class="nav-link"><strong>Etudiant:
+								{{ app.user.etudiant.nom }}
+								|
+								{{app.user.etudiant.prenom}}</strong></b>
+						{% endif %}
+					</li>
+				{% endif %}
+				{% if is_granted('IS_AUTHENTICATED_FULLY') == false %}
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('app_login')}}">Login</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('app_register')}}">Inscription</a>
+					</li>
+				{% else %}
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('app_logout')}}">Logout</a>
+					</li>
+				{% endif %}
+            </ul>
+        </nav>
+		<div class="container mt-4">
+            <!-- Content Section -->
+		    {% block body %}{% endblock %}
+        </div>
+        <!-- Footer Section -->
+        <footer class="mt-5 position-fixed end-0 w-100 bottom-0">
+            <div class="bg-dark text-white text-center py-2">
+                &copy; 2023 Your Website
+            </div>
+        </footer>
+	</body>
+</html>
+{% block javascripts %}
+	{{ encore_entry_script_tags('app') }}
+{% endblock %}

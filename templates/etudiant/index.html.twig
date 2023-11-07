@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Historique d'étudiant{% endblock %}
+
+{% block body %}
+    <h1 class="mb-3">Historique d'étudiant</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Email</th>
+                <th>Téléphone</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for etudiant in etudiants %}
+            <tr>
+                <td>{{ etudiant.id }}</td>
+                <td>{{ etudiant.nom }}</td>
+                <td>{{ etudiant.prenom }}</td>
+                <td>{{ etudiant.email }}</td>
+                <td>{{ etudiant.phone }}</td>
+                <td>
+                    <a class="btn btn-info" href="{{ path('app_etudiant_show', {'id': etudiant.id}) }}">Afficher</a>
+                    <a class="btn btn-warning" href="{{ path('app_etudiant_edit', {'id': etudiant.id}) }}">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">Aucun étudiant trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
