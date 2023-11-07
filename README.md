@@ -89,7 +89,7 @@ security:
                 class: App\Entity\User
                 property: email
 
-# 2 - Registering the User: Hashing Passwords
+# 2 - Register registration the User: Hashing Passwords
 
 https://symfony.com/doc/5.4/security.html#registering-the-user-hashing-passwords
 
@@ -526,7 +526,7 @@ env PANTHER_NO_HEADLESS=1 ./vendor/bin/phpunit tests/ContactPanterTest.php --sto
 env PANTHER_NO_HEADLESS=1 ./vendor/bin/phpunit tests/ContactPanterTest.php --filter testLoginAsEtudiantug
 
 - correct command to execute panter width open chrome
-env PANTHER_NO_HEADLESS=1 ./vendor/bin/phpunit tests/ContactPanterTest.php --filter testLoginAsEtudiantug
+env PANTHER_NO_HEADLESS=1 ./vendor/bin/phpunit tests/ContactPanterTest.php --filter testCreateReservation --debug
 
 - correct command to execute juste do the test without opening chrome
 ./vendor/bin/phpunit tests/ContactPanterTest.php
